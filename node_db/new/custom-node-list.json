@@ -1,6 +1,37 @@
 {
     "custom_nodes": [
         {
+            "author": "muerrilla",
+            "title": "ComfyUI Tab Cycle",
+            "id": "ComfyUI-Tab-Cycle",
+            "reference": "https://github.com/muerrilla/ComfyUI-Tab-Cycle",
+            "files": [
+                "https://github.com/muerrilla/ComfyUI-Tab-Cycle"
+            ],
+            "install_type": "git-clone",
+            "description": "Cycle through the number input fields on a node using Tab / Shift+Tab. Classic UI QoL extension."
+        },
+        {
+            "author": "0xBeycan",
+            "title": "ComfyUI-SocialMediaExport",
+            "reference": "https://github.com/0xBeycan/ComfyUI-SocialMediaExport",
+            "files": [
+                "https://github.com/0xBeycan/ComfyUI-SocialMediaExport"
+            ],
+            "install_type": "git-clone",
+            "description": "A ComfyUI output node that takes a full-quality master image (any resolution, any aspect ratio) and emits platform-ready derivatives with the minimum possible cropping and a controlled, high-fidelity encode."
+        },
+        {
+            "author": "0xBeycan",
+            "title": "ComfyUI-PostFx",
+            "reference": "https://github.com/0xBeycan/ComfyUI-PostFx",
+            "files": [
+                "https://github.com/0xBeycan/ComfyUI-PostFx"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI node for postfx library - Theme-based image post-processing & film-emulation pipeline — pure Python, CPU, no GPU."
+        },
+        {
             "author": "designloves2",
             "title": "ComfyUI-TJ_NODE",
             "id": "ComfyUI-TJ_NODE",
