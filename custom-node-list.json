@@ -60967,6 +60967,27 @@
             ],
             "install_type": "git-clone",
             "description": "Multiple named boolean toggle switches in a single node, each with an independent BOOLEAN output. Adjustable toggle count (1-20) and labels; batch-apply to other nodes by name filter (widgets/bypass/mute)."
+        },
+        {
+            "author": "pixaroma",
+            "title": "ComfyUI-Pixaroma",
+            "id": "comfyui-pixaroma",
+            "reference": "https://github.com/pixaroma/ComfyUI-Pixaroma",
+            "files": [
+                "https://github.com/pixaroma/ComfyUI-Pixaroma"
+            ],
+            "install_type": "git-clone",
+            "description": "Creative suite for ComfyUI: fullscreen Image Composer, Paint, 3D Builder, Image Crop and AudioReact editors, plus Load/Save Image, Save Mp4, Load Video, Inpaint Crop and Stitch, Outpaint, XY Plot, Prompt library, LoRA Loader, Control Panel, Notes, Labels, and canvas tools for aligning and grouping nodes."
+        },
+        {
+            "author": "MengYe-Z",
+            "title": "ComfyUI MultiPoint White Balance",
+            "reference": "https://github.com/MengYe-Z/ComfyUI-MultiPointWhiteBalance",
+            "files": [
+                "https://github.com/MengYe-Z/ComfyUI-MultiPointWhiteBalance"
+            ],
+            "install_type": "git-clone",
+            "description": "Multi-point white balance and exposure correction for e-commerce product images."
         }
     ]
 }
