@@ -585,6 +585,7 @@
             "1hew_ImageAlphaEdge",
             "1hew_ImageAlphaJoin",
             "1hew_ImageAlphaSplit",
+            "1hew_ImageAreaCompare",
             "1hew_ImageBBoxOverlayByMask",
             "1hew_ImageBWMatte",
             "1hew_ImageBatchGroup",
@@ -624,7 +625,6 @@
             "1hew_ImageResizeGemini30ProImage",
             "1hew_ImageResizeJimeng",
             "1hew_ImageResizeQwenImage",
-            "1hew_ImageResizeQwenImage30",
             "1hew_ImageResizeQwenImage30Pro",
             "1hew_ImageResizeUniversal",
             "1hew_ImageRotateWithMask",
@@ -2588,6 +2588,7 @@
             "AcademiaSD_MoviolaGuide",
             "AcademiaSD_MoviolaIn",
             "AcademiaSD_MoviolaOut",
+            "AcademiaSD_MultiImageReference",
             "AcademiaSD_MultiLora",
             "AcademiaSD_MultiPrompt",
             "AcademiaSD_NegativePrompt",
@@ -2595,6 +2596,7 @@
             "AcademiaSD_Numeric",
             "AcademiaSD_PositivePrompt",
             "AcademiaSD_ProjectPaths",
+            "AcademiaSD_QwenRefImages",
             "AcademiaSD_Resolution",
             "AcademiaSD_ResolutionCalc",
             "AcademiaSD_ResolutionDisplay",
@@ -7606,6 +7608,18 @@
             "title_aux": "comfyui-supabase-power"
         }
     ],
+    "https://github.com/D33MO/ComfyUI-Prompt-Warehouse": [
+        [
+            "PromptLine",
+            "PromptMultiline",
+            "PromptWarehouse",
+            "PromptWarehouseMultiLoraLoader",
+            "PromptWarehouseSaveImageWithDelete"
+        ],
+        {
+            "title_aux": "ComfyUI Prompt Warehouse"
+        }
+    ],
     "https://github.com/DBMePls/comfyui-llm-api-client": [
         [
             "TabbyAPISamplersNode",
@@ -8429,6 +8443,40 @@
         ],
         {
             "title_aux": "ComfyUI-nearest-qwen-resolution"
+        }
+    ],
+    "https://github.com/DenRakEiw/DenRakEiw_Nodes": [
+        [
+            "ColorGeneratorNode",
+            "ComfyGotchiNode_DRE",
+            "ConditioningInspector",
+            "Cosmos3SuperTextToImage_DRE",
+            "Flux3PrompterDRE",
+            "Flux3VideoDRE",
+            "Flux3VideoUpscaleDRE",
+            "FluxLayerDiffuseConditioningFix",
+            "FluxLayerDiffuseDecoderSimple",
+            "FluxLayerDiffuseEmptyConditioning",
+            "FluxLayerDiffuseInfo",
+            "FluxLayerDiffuseStandaloneLoader",
+            "LLMDeforumGenerator",
+            "LatentColorMatchSimple_DRE",
+            "LatentColorMatch_DRE",
+            "LatentImageAdjust_DRE",
+            "LoadImageSequence",
+            "LoadImageSequenceInfo",
+            "MultiImageAspectRatioComposer",
+            "OptimizedWanVAEUpscaler",
+            "PreviewTransparentImage",
+            "SaveTransparentImage",
+            "TransparentImageInfo",
+            "UTF8CaptionSaver",
+            "UniversalNNLatentUpscale",
+            "UniversalNNLatentUpscale_DRE",
+            "WanNNLatentUpscaler"
+        ],
+        {
+            "title_aux": "DenRakEiw Nodes"
         }
     ],
     "https://github.com/DenRakEiw/Latent_Nodes": [
@@ -18256,76 +18304,50 @@
     ],
     "https://github.com/MNeMoNiCuZ/ComfyUI-mnemic-nodes": [
         [
-            "AudioVisualizer",
-            "ColorfulStartingImage",
-            "Ideogram4PromptBuilder",
-            "Ideogram4RandomPrompter",
-            "ImageSaveWithMetadata",
-            "LiteralBool",
-            "LiteralFloat",
-            "LiteralInt",
-            "LiteralString",
-            "LoadImageAdvanced",
-            "LoadImageTemporarily",
-            "LoadImagesFromPath",
-            "LoadRandomCheckpoint",
-            "LoraTagLoader",
-            "PromptPropertyExtractor",
-            "RandomBool",
-            "RandomColor",
-            "RandomFloatInRange",
-            "RandomIntInRange",
-            "RandomSeed",
-            "RandomString",
-            "ResolutionSelector",
-            "StringCleaning",
-            "StringConcat",
-            "StringTextExtractor",
-            "StringTextSplitter",
-            "TiktokenTokenizer",
-            "WildcardProcessor",
-            "\u2699\ufe0f Prompt Property Extractor",
-            "\u26d4 Generate Negative Prompt",
-            "\u2702\ufe0f String Text Extractor",
-            "\u2702\ufe0f String Text Splitter",
-            "\u270f\ufe0f Literal Bool",
-            "\u270f\ufe0f Literal Float",
-            "\u270f\ufe0f Literal Int",
-            "\u270f\ufe0f Literal String",
-            "\u2728\ud83d\udcac Groq LLM API",
-            "\u2728\ud83d\udcdd Groq ALM API - Transcribe",
-            "\u2728\ud83d\udcf7 Groq VLM API",
-            "\ud83c\udfa8 Colorful Starting Image",
-            "\ud83c\udfb2 Ideogram 4 Random Prompter",
-            "\ud83c\udfb2 Load Random Checkpoint",
-            "\ud83c\udfb2 Random Bool",
-            "\ud83c\udfb2 Random Color",
-            "\ud83c\udfb2 Random Float in Range",
-            "\ud83c\udfb2 Random Int in Range",
-            "\ud83c\udfb2 Random Seed",
-            "\ud83c\udfb2 Random String",
-            "\ud83c\udfb5\ud83d\udcca Audio Visualizer",
-            "\ud83c\udff7\ufe0f LoRA Loader Prompt Tags",
-            "\ud83d\udcbe Save Image With Metadata",
-            "\ud83d\udcbe Save Text File With Path",
-            "\ud83d\udcc1 Get File Path",
-            "\ud83d\udcc2 Load Images From Path",
-            "\ud83d\udcc5 Format Date Time",
-            "\ud83d\udcd0 Resolution Image Size Selector",
-            "\ud83d\udcdd Wildcard Processor",
-            "\ud83d\udcdd Wildcard Processor Advanced",
-            "\ud83d\udd00 Batch Wildcard Upscale Sampler",
-            "\ud83d\udd17 String Concat / Append",
-            "\ud83d\udd20 Tiktoken Tokenizer Info",
-            "\ud83d\uddbc\ufe0f Download Image from URL",
-            "\ud83d\uddbc\ufe0f Load Image Advanced",
-            "\ud83d\uddbc\ufe0f Load Image Temporarily",
-            "\ud83d\uddbc\ufe0f+\ud83d\udcdd Load Text-Image Pair (Single)",
-            "\ud83d\uddbc\ufe0f+\ud83d\udcdd Load Text-Image Pairs (List)",
-            "\ud83d\uddbc\ufe0f\ud83d\udcca Metadata Extractor (List)",
-            "\ud83d\uddbc\ufe0f\ud83d\udcca Metadata Extractor (Single)",
-            "\ud83e\udde9 Ideogram 4 Prompt Builder w. String Inputs",
-            "\ud83e\uddf9 String Cleaning"
+            "MNeMiC_AudioVisualizer",
+            "MNeMiC_BatchWildcardSampler",
+            "MNeMiC_ColorfulStartingImage",
+            "MNeMiC_DownloadImageFromURL",
+            "MNeMiC_FormatDateTime",
+            "MNeMiC_GenerateNegativePrompt",
+            "MNeMiC_GetFilePath",
+            "MNeMiC_GroqAPIALMTranscribe",
+            "MNeMiC_GroqAPIALMTranslate",
+            "MNeMiC_GroqAPICompletion",
+            "MNeMiC_GroqAPILLM",
+            "MNeMiC_GroqAPIVLM",
+            "MNeMiC_Ideogram4PromptBuilder",
+            "MNeMiC_Ideogram4RandomPrompter",
+            "MNeMiC_ImageSaveWithMetadata",
+            "MNeMiC_LiteralBool",
+            "MNeMiC_LiteralFloat",
+            "MNeMiC_LiteralInt",
+            "MNeMiC_LiteralString",
+            "MNeMiC_LoadImageAdvanced",
+            "MNeMiC_LoadImageTemporarily",
+            "MNeMiC_LoadImagesFromPath",
+            "MNeMiC_LoadRandomCheckpoint",
+            "MNeMiC_LoadTextImagePairSingle",
+            "MNeMiC_LoadTextImagePairsList",
+            "MNeMiC_LoraTagLoader",
+            "MNeMiC_MetadataExtractorList",
+            "MNeMiC_MetadataExtractorSingle",
+            "MNeMiC_PromptPropertyExtractor",
+            "MNeMiC_RandomBool",
+            "MNeMiC_RandomColor",
+            "MNeMiC_RandomFloatInRange",
+            "MNeMiC_RandomIntInRange",
+            "MNeMiC_RandomSeed",
+            "MNeMiC_RandomString",
+            "MNeMiC_ResolutionSelector",
+            "MNeMiC_SaveTextFile",
+            "MNeMiC_StringCleaning",
+            "MNeMiC_StringConcat",
+            "MNeMiC_StringTextExtractor",
+            "MNeMiC_StringTextSplitter",
+            "MNeMiC_TiktokenTokenizer",
+            "MNeMiC_WildcardProcessor",
+            "MNeMiC_WildcardProcessorAdvanced"
         ],
         {
             "title_aux": "ComfyUI-mnemic-nodes"
@@ -24758,6 +24780,26 @@
             "title_aux": "ComfyUI-Amage"
         }
     ],
+    "https://github.com/SamurAIGPT/muapi-comfyui": [
+        [
+            "MuAPIApiKey",
+            "MuAPIAudio",
+            "MuAPIExtendVideo",
+            "MuAPIGenerate",
+            "MuAPIImageEnhance",
+            "MuAPIImageTo3D",
+            "MuAPIImageToImage",
+            "MuAPIImageToVideo",
+            "MuAPILipsync",
+            "MuAPITextToImage",
+            "MuAPITextToVideo",
+            "MuAPIVideoEdit",
+            "MuAPIVideoSaver"
+        ],
+        {
+            "title_aux": "muapi-comfyui"
+        }
+    ],
     "https://github.com/San4itos/ComfyUI-Save-Images-as-Video": [
         [
             "ConvertVideoFFmpeg_san4itos",
@@ -26516,6 +26558,41 @@
             "title_aux": "ComfyUI SaveAnything Node (SG11)"
         }
     ],
+    "https://github.com/Songssx/ComfyUI-MiniMaxH3-TimelineDirector": [
+        [
+            "MiniMaxH3AddLatentGuide",
+            "MiniMaxH3FiniteAudioTrimTail",
+            "MiniMaxH3FiniteLatentContinuation",
+            "MiniMaxH3FiniteLoopAccumulate",
+            "MiniMaxH3FiniteLoopInitialize",
+            "MiniMaxH3FiniteLoopOutput",
+            "MiniMaxH3FiniteLoopPrepare",
+            "MiniMaxH3FiniteLoopSegment",
+            "MiniMaxH3FiniteOutputTrim",
+            "MiniMaxH3FiniteSegmentExpansion",
+            "MiniMaxH3FiniteSegmentFinalize",
+            "MiniMaxH3FiniteSegmentSampler",
+            "MiniMaxH3LockAudioLatent",
+            "MiniMaxH3LockedAudioMaster",
+            "MiniMaxH3LockedAudioSlice",
+            "MiniMaxH3OmniPromptBridge",
+            "MiniMaxH3PresetExporter",
+            "MiniMaxH3PresetLoader",
+            "MiniMaxH3SilentAudioMaster",
+            "MiniMaxH3SilentAudioSlice",
+            "MiniMaxH3TimelineDirector",
+            "MiniMaxH3TimelineEncoder",
+            "MiniMaxH3TimelinePlanner",
+            "MiniMaxH3TimelineSelfLiftSampler",
+            "MiniMaxH3VisualDifferenceMetrics",
+            "SelfLiftH3Sampler",
+            "SelfLiftH3TST",
+            "SelfLiftImageSampler"
+        ],
+        {
+            "title_aux": "ComfyUI MiniMax H3 Timeline Director"
+        }
+    ],
     "https://github.com/Sorcerio/MBM-Music-Visualizer": [
         [
             "mbmAudioFeatureCalculator",
@@ -27936,6 +28013,7 @@
             "SupersideSeedreamV5ProEditNode",
             "SupersideSkinDetailZImageLoraNode",
             "SupersideSkinIntensityPromptNode",
+            "SupersideSkuReferenceSheetNode",
             "SupersideSmartDetailSheetNode",
             "SupersideStitchRegionNode",
             "SupersideTextPreviewNode",
@@ -36560,6 +36638,18 @@
         ],
         {
             "title_aux": "ComfyUI Smart Scaler"
+        }
+    ],
+    "https://github.com/bada-ya/ComfyUI-Bada-Utils": [
+        [
+            "BadaAsyncGeminiStudio",
+            "BadaGoogleTranslator",
+            "BadaPresetHub",
+            "BadaRegionalPrompt",
+            "VisualGridPromptNode"
+        ],
+        {
+            "title_aux": "ComfyUI-Bada-Utils"
         }
     ],
     "https://github.com/badayvedat/ComfyUI-fal-Connector": [
@@ -46376,6 +46466,9 @@
             "SeedreamV5LiteEditSequentialNode",
             "SeedreamV5LiteNode",
             "SeedreamV5LiteSequentialNode",
+            "SeedreamV5ProEditNode",
+            "SeedreamV5ProLayersNode",
+            "SeedreamV5ProNode",
             "UploadImage",
             "VeoImageToVideo",
             "VeoTextToVideo",
@@ -52353,7 +52446,6 @@
     ],
     "https://github.com/huchukato/ComfyUI-QwenVL-Mod": [
         [
-            "AILab_LivepeerRender",
             "AILab_QwenVL",
             "AILab_QwenVL_Advanced",
             "AILab_QwenVL_GGUF",
@@ -61006,6 +61098,7 @@
             "AUNInputsHybrid",
             "AUNInputsRefine",
             "AUNInputsRefineBasic",
+            "AUNInputsWan22Basic",
             "AUNKSamplerPlusV2",
             "AUNKSamplerPlusv3",
             "AUNKSamplerPlusv4",
@@ -61067,6 +61160,7 @@
             "AUNTextIndexSwitch5",
             "AUNTextIndexSwitch5Diffusers",
             "AUNTitleImagePreview",
+            "AUNWan22MoE",
             "AUNWildcardAddToPrompt",
             "AnyType(str)",
             "AudioInputOptions",
@@ -63649,6 +63743,14 @@
         ],
         {
             "title_aux": "Unet Bnb Model Loader"
+        }
+    ],
+    "https://github.com/mengshengzhijie/ComfyUI-Bilingual-Prompt-Inspector": [
+        [
+            "BilingualPromptInspector"
+        ],
+        {
+            "title_aux": "ComfyUI-Bilingual-Prompt-Inspector"
         }
     ],
     "https://github.com/mephisto83/petty-paint-comfyui-node": [
@@ -67292,6 +67394,7 @@
             "orex Save Image",
             "orex Save Text",
             "orex Scail2",
+            "orex Skin Retouching AI",
             "orex String Function",
             "orex String Selector"
         ],
@@ -73477,6 +73580,7 @@
             "EmbeddingRenameKeys",
             "EmbeddingThreeMerger",
             "EmbeddingTwoMerger",
+            "LayerParameterConfiguration",
             "LoRAExtractFixed",
             "LoRAExtractFrobenius",
             "LoRAExtractKnee",
@@ -73488,6 +73592,7 @@
             "LoRAMultiMergeDARE",
             "LoRAMultiMergeDAREEnhanced",
             "LoRANormalizeAlpha",
+            "LoRAOnModelAnalysis",
             "LoRAPruneKeys",
             "LoRARenameKeys",
             "LoRAResizeCumulative",
@@ -78542,6 +78647,18 @@
             "title_aux": "Krea2 BBOX Prompter Suite"
         }
     ],
+    "https://github.com/ukr8b3g-cmyk/MiniMax-H3-T2VA-Draft-Continue": [
+        [
+            "H3ContinueSampler",
+            "H3DraftSampler",
+            "H3StructuredLayoutAudit",
+            "H3T2VAContinue",
+            "H3T2VADraft"
+        ],
+        {
+            "title_aux": "MiniMax H3 Draft Continue"
+        }
+    ],
     "https://github.com/ukr8b3g-cmyk/MiniMax-Music3-Semantic-Studio": [
         [
             "MiniMaxMusic3AudioFreeze",
@@ -80811,6 +80928,7 @@
             "TuringUtilsKrea2IdentityEditConditioning",
             "TuringUtilsLazyIfElse",
             "TuringUtilsLoadIndexedVideoSegment",
+            "TuringUtilsMaskToVisualPrompts",
             "TuringUtilsMergeIndexedVideoSegments",
             "TuringUtilsMiniMaxH3BlockCachePatch",
             "TuringUtilsMiniMaxH3LatentUpscale",
@@ -80830,6 +80948,8 @@
             "TuringUtilsTrimVideoContinuationPrefix",
             "TuringUtilsVideoContinuationConcat",
             "TuringUtilsVideoLatentCompositeMasked",
+            "TuringUtilsVideoMaskGuidedCrop",
+            "TuringUtilsVideoMaskGuidedStitch",
             "TuringUtilsVideoMotionContactSheet",
             "TuringUtilsVideoPrefixContextNoise",
             "TuringUtilsWanVideoFramesPadding"
@@ -82227,7 +82347,7 @@
             "title_aux": "comfyuitools"
         }
     ],
-    "https://github.com/xzbdqian10nian/ComfyUI-Qwen3.8-VL": [
+    "https://github.com/xzbdqian10nian/ComfyUI-TankNodes": [
         [
             "Qwen38VLLoader",
             "VisionAPIDirect",
@@ -82236,7 +82356,7 @@
             "VisionUnload"
         ],
         {
-            "title_aux": "Qwen3.8 VL"
+            "title_aux": "TankNodes"
         }
     ],
     "https://github.com/y277an/ComfyUI-y277an-Gemini": [
@@ -83528,6 +83648,7 @@
             "Y7Nodes_ScaleImageBy",
             "Y7Nodes_ScaleImageToTotalPixels",
             "Y7Nodes_ShowAnything",
+            "Y7Nodes_SwitchModel",
             "Y7Nodes_T5_TokenCounter",
             "Y7Nodes_Text"
         ],
