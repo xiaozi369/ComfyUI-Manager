@@ -2659,6 +2659,8 @@
     ],
     "https://github.com/InformedViewz/ComfyUI-InformedViewz": [
         [
+            "InformedViewz Image Loaders",
+            "InformedViewz Image Savers",
             "InformedViewz Image Sizes"
         ],
         {
@@ -4881,33 +4883,6 @@
             "title_aux": "ComfyUI Port for Google's Prompt-to-Prompt"
         }
     ],
-    "https://github.com/Saganaki22/ComfyUI-KittenTTS": [
-        [
-            "KittenTTS"
-        ],
-        {
-            "title_aux": "Kitten-TTS [NAME CONFLICT]"
-        }
-    ],
-    "https://github.com/Saganaki22/ComfyUI-NovaSR": [
-        [
-            "NovaSR"
-        ],
-        {
-            "title_aux": "ComfyUI-NovaSR"
-        }
-    ],
-    "https://github.com/Saganaki22/ComfyUI-ytdl_nodes": [
-        [
-            "YTDLDownloader",
-            "YTDLLinksInput",
-            "YTDLPreview",
-            "YTDLPreviewAudio"
-        ],
-        {
-            "title_aux": "ComfyUI YTDL Nodes [WIP]"
-        }
-    ],
     "https://github.com/Sai-ComfyUI/ComfyUI-MS-Nodes": [
         [
             "FloatMath",
@@ -5398,6 +5373,7 @@
             "SDVN Boolean",
             "SDVN CLIP Download",
             "SDVN CLIP Text Encode",
+            "SDVN CLIP Text Encode Qwen Image 2.1",
             "SDVN CLIP Text Encode Simple",
             "SDVN CLIPVision Download",
             "SDVN Checkpoint Download",
@@ -5594,14 +5570,6 @@
         ],
         {
             "title_aux": "Comfyui_yolo26 [WIP]"
-        }
-    ],
-    "https://github.com/StevenBaby/comfyui-tools": [
-        [
-            "IntParameterNode"
-        ],
-        {
-            "title_aux": "comfyui-tools"
         }
     ],
     "https://github.com/Symbiomatrix/Comfyui-Sort-Files": [
@@ -8525,6 +8493,7 @@
             "TextEncodeHunyuanVideo_ImageToVideo",
             "TextEncodeJoyImageEdit",
             "TextEncodeMageFlowEdit",
+            "TextEncodeMingImageEdit",
             "TextEncodeQwenImage21",
             "TextEncodeQwenImageEdit",
             "TextEncodeQwenImageEditPlus",
@@ -8826,26 +8795,6 @@
         ],
         {
             "title_aux": "ComfyUI-RMBG-Custom"
-        }
-    ],
-    "https://github.com/denislov/Comfyui_AutoSurvey": [
-        [
-            "AddDoc2Knowledge",
-            "AutoSurvey",
-            "ChatModel",
-            "ComfyMilvus",
-            "ComfyWeaviate",
-            "ManageDatabase",
-            "MilvusScheme",
-            "MsField",
-            "QueryKnowledge",
-            "WcProperty",
-            "WcPropertyComb",
-            "WriteOutline",
-            "WriteSection"
-        ],
-        {
-            "title_aux": "Comfyui_AutoSurvey"
         }
     ],
     "https://github.com/dexintenebri/comfyui_voxel_nodes": [
@@ -12933,6 +12882,7 @@
             "Flux.2 Settings RES4LYF",
             "Ideogram.4 Settings",
             "Image Size Calculator",
+            "Minimax-H3 t2i Settings",
             "Qwen Edit Settings",
             "Settings",
             "Upscale Settings Calculator"
@@ -13772,20 +13722,6 @@
         ],
         {
             "title_aux": "NudeNet-Detector-Provider [WIP]"
-        }
-    ],
-    "https://github.com/pollockjj/ComfyUI-JAXTools": [
-        [
-            "JAX_AdjustBrightness",
-            "JAX_AdjustContrast",
-            "JAX_AdjustGamma",
-            "JAX_AdjustHue",
-            "JAX_FlipUpDown",
-            "JAX_GaussianBlur",
-            "JAX_StyleTransfer"
-        ],
-        {
-            "title_aux": "JAXTools"
         }
     ],
     "https://github.com/pomelyu/cy-prompt-tools": [

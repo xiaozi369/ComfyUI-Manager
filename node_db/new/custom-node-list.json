@@ -1,6 +1,126 @@
 {
     "custom_nodes": [
         {
+            "author": "iljung1106",
+            "title": "Krea2 Training Free Improvements",
+            "reference": "https://github.com/iljung1106/Krea2-Training-Free-Improvements",
+            "files": [
+                "https://github.com/iljung1106/Krea2-Training-Free-Improvements"
+            ],
+            "install_type": "git-clone",
+            "description": "Composable Krea2 guidance and acceleration nodes, including GAG, NAG, Prompt Reinjection, TaylorSeer, and adaptive progressive sampling."
+        },
+        {
+            "author": "aharaooo",
+            "title": "MiniMax H3 Frame Rate Adjustment (Ac)",
+            "reference": "https://github.com/AharaOoO/ComfyUI-MiniMaxH3-FrameRate-Adjustment-Ac",
+            "files": [
+                "https://github.com/AharaOoO/ComfyUI-MiniMaxH3-FrameRate-Adjustment-Ac"
+            ],
+            "install_type": "git-clone",
+            "description": "Experimental MiniMax H3 frame-rate adjustment with temporal-coordinate retiming and pre-sampling AV duration alignment for ComfyUI."
+        },
+        {
+            "author": "hillobar",
+            "title": "ComfyUI-Hillobar",
+            "reference": "https://github.com/Hillobar/ComfyUI-Hillobar",
+            "files": [
+                "https://github.com/Hillobar/ComfyUI-Hillobar"
+            ],
+            "install_type": "git-clone",
+            "description": "Custom nodes for ComfyUI. Includes progressive-resolution (staged) sampling for MiniMax H3."
+        },
+        {
+            "author": "misutesu-desu",
+            "title": "H3 Auto Prompt Chain",
+            "reference": "https://github.com/misutesu-desu/H3-AutoPromptChain",
+            "files": [
+                "https://github.com/misutesu-desu/H3-AutoPromptChain"
+            ],
+            "install_type": "git-clone",
+            "description": "Unattended multi-shot MiniMax H3 prompt chains for ComfyUI"
+        },
+        {
+            "author": "konohana",
+            "title": "Anima-2.9B Remap",
+            "reference": "https://github.com/shin131002/ComfyUI-Anima29B-Remap",
+            "files": [
+                "https://github.com/shin131002/ComfyUI-Anima29B-Remap"
+            ],
+            "install_type": "git-clone",
+            "description": "Auto block-index remapping for applying old-Anima LoRAs and merging models with Anima-2.9B (28-to-40-block layer expansion)"
+        },
+        {
+            "author": "tomedonaku29",
+            "title": "Minimax H3 Text Embeddings Node",
+            "reference": "https://github.com/2929Dance/ComfyUI-Minimax-H3-Text-Embeddings",
+            "files": [
+                "https://github.com/2929Dance/ComfyUI-Minimax-H3-Text-Embeddings"
+            ],
+            "install_type": "git-clone",
+            "description": "Support loading text embeddings for Minimax H3 in DiffSynth format"
+        },
+        {
+            "author": "GITS Tracked Identity contributors",
+            "title": "comfyui-gits-tracked-identity",
+            "reference": "https://github.com/Niutonian/ComfyUI-GITS-Tracked-Identity",
+            "files": [
+                "https://github.com/Niutonian/ComfyUI-GITS-Tracked-Identity"
+            ],
+            "install_type": "git-clone",
+            "description": "Temporally tracked identity graphic overlays for ComfyUI (single image, video batch, webcam)"
+        },
+        {
+            "author": "Hongs",
+            "title": "Hongs-node",
+            "reference": "https://github.com/hong87LH/Hongs-node",
+            "files": [
+                "https://github.com/hong87LH/Hongs-node"
+            ],
+            "install_type": "git-clone",
+            "description": "Compatibility fixes and reusable workflow utility nodes for ComfyUI"
+        },
+        {
+            "author": "nuvulabs",
+            "title": "ComfyUI-MiniMaxH3-Inpaint",
+            "reference": "https://github.com/nuvulabs/ComfyUI-MiniMaxH3-Inpaint",
+            "files": [
+                "https://github.com/nuvulabs/ComfyUI-MiniMaxH3-Inpaint"
+            ],
+            "install_type": "git-clone",
+            "description": "A ComfyUI node that seeds MiniMax H3's audio-video NestedTensor latent from a plate video plus a mask, so the sampler inpaints only the masked region (object/character insertion & swap) while preserving the rest of the plate."
+        },
+        {
+            "author": "cicalooo",
+            "title": "MiniMax H3 Power LoRA Stack",
+            "reference": "https://github.com/cicalooo/ComfyUI-H3-PowerLoraStack",
+            "files": [
+                "https://github.com/cicalooo/ComfyUI-H3-PowerLoraStack"
+            ],
+            "install_type": "git-clone",
+            "description": "Stacked multi-LoRA loader for MiniMax H3 across bf16, fp8, int8 and w4a8 weights."
+        },
+        {
+            "author": "YingsenP",
+            "title": "ComfyUI-MiniMaxH3-MediaPrompt",
+            "reference": "https://github.com/YingsenP/ComfyUI-MiniMaxH3-MediaPrompt",
+            "files": [
+                "https://github.com/YingsenP/ComfyUI-MiniMaxH3-MediaPrompt"
+            ],
+            "install_type": "git-clone",
+            "description": "MiniMax H3 reference media and rich prompt transport nodes for ComfyUI."
+        },
+        {
+            "author": "searchingman",
+            "title": "MiniMax H3 Text Encoders",
+            "reference": "https://github.com/kgonia/ComfyUI-MiniMaxH3TextEncoders",
+            "files": [
+                "https://github.com/kgonia/ComfyUI-MiniMaxH3TextEncoders"
+            ],
+            "install_type": "git-clone",
+            "description": "One ComfyUI loader for modified Qwen3-VL text encoders compatible with MiniMax-H3."
+        },
+        {
             "author": "CoolBreeze164",
             "title": "ComfyUI CoolB Nodes",
             "id": "ComfyUI-CoolB-Nodes",
