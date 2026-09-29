@@ -1,6 +1,96 @@
 {
     "custom_nodes": [
         {
+            "author": "beijinren",
+            "title": "H3 Context Noise",
+            "reference": "https://github.com/beijinren/ComfyUI-H3-Context-Noise",
+            "files": [
+                "https://github.com/beijinren/ComfyUI-H3-Context-Noise"
+            ],
+            "install_type": "git-clone",
+            "description": "Manual tapered context noising for MiniMax H3 Motion Context (character-swap continuation)"
+        },
+        {
+            "author": "ethanfel",
+            "title": "MiniMax H3 Edit",
+            "reference": "https://github.com/ethanfel/ComfyUI-MiniMax-H3-Edit",
+            "files": [
+                "https://github.com/ethanfel/ComfyUI-MiniMax-H3-Edit"
+            ],
+            "install_type": "git-clone",
+            "description": "Minimal single-image MiniMax H3 photo editing with native or semantic references"
+        },
+        {
+            "author": "lin-sein",
+            "title": "Lace Studio Refine",
+            "reference": "https://github.com/lin-sein/lace-studio-refine-comfyui",
+            "files": [
+                "https://github.com/lin-sein/lace-studio-refine-comfyui"
+            ],
+            "install_type": "git-clone",
+            "description": "Deterministic lace scan cleanup, repeat reconstruction, background replacement, and mask output for ComfyUI."
+        },
+        {
+            "author": "hearmeman24",
+            "title": "LoRA Block Surgeon",
+            "reference": "https://github.com/Hearmeman24/ComfyUI-LoRABlockSurgeon",
+            "files": [
+                "https://github.com/Hearmeman24/ComfyUI-LoRABlockSurgeon"
+            ],
+            "install_type": "git-clone",
+            "description": "Measure where a LoRA stores its learned change, per transformer block, then apply only the blocks you choose. Read-only: your .safetensors is never rewritten."
+        },
+        {
+            "author": "AesSedai",
+            "title": "comfyui-minimax-h3-parallel",
+            "reference": "https://github.com/AesSedai/ComfyUI-MiniMaxH3-Parallel",
+            "files": [
+                "https://github.com/AesSedai/ComfyUI-MiniMaxH3-Parallel"
+            ],
+            "install_type": "git-clone",
+            "description": "Exact activation-only multi-GPU attention head sharding for MiniMax H3 in ComfyUI."
+        },
+        {
+            "author": "Keisuke URAGO",
+            "title": "comfyui-conditional-string-concat",
+            "reference": "https://github.com/bravotan/comfyui-conditional-string-concat",
+            "files": [
+                "https://github.com/bravotan/comfyui-conditional-string-concat"
+            ],
+            "install_type": "git-clone",
+            "description": "Concatenate multiple text fields, including only the ones with an enabled checkbox"
+        },
+        {
+            "author": "airo",
+            "title": "Unload Models",
+            "reference": "https://github.com/neezoy/ComfyUI-UnloadModels",
+            "files": [
+                "https://github.com/neezoy/ComfyUI-UnloadModels"
+            ],
+            "install_type": "git-clone",
+            "description": "Passthrough nodes that free models ComfyUI's memory manager will not free, so large models fit on small cards."
+        },
+        {
+            "author": "hyukudan",
+            "title": "comfyui-outpaintdirectional",
+            "reference": "https://github.com/hyukudan/ComfyUI-OutpaintDirectional",
+            "files": [
+                "https://github.com/hyukudan/ComfyUI-OutpaintDirectional"
+            ],
+            "install_type": "git-clone",
+            "description": "Directional Canvas Placement & Outpainting Tools for ComfyUI"
+        },
+        {
+            "author": "speedyrulz",
+            "title": "Resize to Multiple",
+            "reference": "https://github.com/speedyrulz/ComfyUI-resize-to-multiple",
+            "files": [
+                "https://github.com/speedyrulz/ComfyUI-resize-to-multiple"
+            ],
+            "install_type": "git-clone",
+            "description": "Resize an image to the closest standard aspect ratio at a target megapixel count, snapped to a selectable pixel multiple, with image, VAE latent, empty latent (SDXL / Flux.2 Klein) and width/height outputs."
+        },
+        {
             "author": "chenr5934-tech",
             "title": "ComfyUI-M8nodes",
             "reference": "https://github.com/chenr5934-tech/ComfyUI-M8nodes",
@@ -4028,16 +4118,6 @@
             ],
             "install_type": "git-clone",
             "description": "A standalone ComfyUI custom node that sends workflows to a remote ComfyUI instance and returns the output image — all in a single node."
-        },
-        {
-            "author": "kapakahi",
-            "title": "comfyui-KargaLLM",
-            "reference": "https://github.com/kapakahi/comfyui-KargaLLM",
-            "files": [
-                "https://github.com/kapakahi/comfyui-KargaLLM"
-            ],
-            "install_type": "git-clone",
-            "description": "A lightweight, standalone ComfyUI node for LLM-powered text and prompt generation that connects to any OpenAI-compatible local LLM server."
         },
         {
             "author": "kana112233",

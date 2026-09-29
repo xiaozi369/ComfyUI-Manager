@@ -2884,16 +2884,6 @@
             "description": "ComfyUI custom node providing customizable prompt generation capabilities. (Description by CC)"
         },
         {
-            "author": "JBKing514",
-            "title": "map_comfyui [WIP]",
-            "reference": "https://github.com/JBKing514/map_comfyui",
-            "files": [
-                "https://github.com/JBKing514/map_comfyui"
-            ],
-            "install_type": "git-clone",
-            "description": "A custom node implementing the Manifold Alignment Protocol (MAP) within ComfyUI, transforming diffusion sampling into a measurable and visualizable geometric process. (Description by CC)\nNOTE: The files in the repo are not organized."
-        },
-        {
             "author": "binarystatic",
             "title": "ComfyUI-BinarystaticMasterSeed",
             "reference": "https://github.com/binarystatic/ComfyUI-BinarystaticMasterSeed",

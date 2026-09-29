@@ -1898,6 +1898,8 @@
             "DonutToneLab",
             "DonutTxtfusionRMSGuard",
             "DonutUniversalDetailer",
+            "DonutVAEDecode",
+            "DonutVAELoader",
             "DonutWeightVectorScale",
             "DonutWidenMergeCLIP",
             "DonutWidenMergeUNet",
@@ -2697,14 +2699,6 @@
         ],
         {
             "title_aux": "ComfyUI_DeleteModelPassthrough_ExecutionFlowControl [WIP]"
-        }
-    ],
-    "https://github.com/JBKing514/map_comfyui": [
-        [
-            "MAP_Pro_Suite"
-        ],
-        {
-            "title_aux": "map_comfyui [WIP]"
         }
     ],
     "https://github.com/JHBOY-ha/ComfyUI-jh-essential": [
@@ -5440,6 +5434,7 @@
             "SDVN Loop Inpaint Stitch",
             "SDVN Lora Download",
             "SDVN Lora info",
+            "SDVN Mask Color Overlay",
             "SDVN Mask Layout Fit",
             "SDVN Mask Regions",
             "SDVN Mask To Transparent Color",
@@ -7719,6 +7714,7 @@
             "BriaVideoReplaceBackground",
             "BuildJsonPromptIdeogram",
             "BuildPoseFile",
+            "ByteDance2DraftToFinalVideoNode",
             "ByteDance2FirstLastFrameNode",
             "ByteDance2ReferenceNodeV2",
             "ByteDance2TextToVideoNode",
@@ -7728,7 +7724,7 @@
             "ByteDanceImageToVideoNode",
             "ByteDanceSeedAudio",
             "ByteDanceSeedNode",
-            "ByteDanceSeedreamLayerSeparationNode",
+            "ByteDanceSeedreamLayerSeparationNodeV2",
             "ByteDanceSeedreamNode",
             "ByteDanceSeedreamNodeV3",
             "ByteDanceTextToVideoNode",
@@ -8205,7 +8201,6 @@
             "OpenAIGPTImage1",
             "OpenAIGPTImageNodeV2",
             "OpenAIInputFiles",
-            "OpenAIVideoSora2",
             "OpenRouterImageNode",
             "OpenRouterLLMNode",
             "OpticalFlowLoader",
@@ -11926,10 +11921,12 @@
             "RequestURL",
             "SaveImageAsZip",
             "SaveTextAsZip",
+            "SaveUltraHDRImage",
             "StrFormat",
             "StrFormatAdv",
             "UNETName",
             "UNETNameGGUF",
+            "UltraHDRParameters",
             "UpscaleModelName",
             "VAEName",
             "WanAnimateBestFrameWindow",
@@ -12481,6 +12478,12 @@
             "title_aux": "ComfyUI_Inteliweb_nodes"
         }
     ],
+    "https://github.com/map/comfyui": [
+        [
+            "MAP_Pro_Suite"
+        ],
+        {}
+    ],
     "https://github.com/marcueberall/ComfyUI-BuildPath": [
         [
             "Build Path Adv"
@@ -12882,7 +12885,7 @@
             "Flux.2 Settings RES4LYF",
             "Ideogram.4 Settings",
             "Image Size Calculator",
-            "Minimax-H3 t2i Settings",
+            "Minimax-H3 t2v Settings",
             "Qwen Edit Settings",
             "Settings",
             "Upscale Settings Calculator"
@@ -13798,11 +13801,8 @@
             "przewodo SwapAnyCondition",
             "przewodo SwapImageComparison",
             "przewodo TimeToFrames",
-            "przewodo WanFirstLastFirstFrameToVideo",
             "przewodo WanGetMaxImageResolutionByAspectRatio",
-            "przewodo WanImageToVideoAdvancedSampler",
             "przewodo WanModelTypeSelector",
-            "przewodo WanPromptChunkStacker",
             "przewodo WanVideoEnhanceAVideo",
             "przewodo WanVideoGenerationModeSelector",
             "przewodo WanVideoLoraStack",
@@ -13905,6 +13905,7 @@
             "Any Dual-Switch [Eclipse]",
             "Any Multi-Switch Lazy Purge [Eclipse]",
             "Any Multi-Switch Lazy [Eclipse]",
+            "Any Multi-Switch Mixed [Eclipse]",
             "Any Multi-Switch Purge [Eclipse]",
             "Any Multi-Switch [Eclipse]",
             "Any Passer Purge [Eclipse]",
@@ -13930,6 +13931,7 @@
             "Danbooru Category Apply [Eclipse]",
             "Danbooru Corpus Maintenance [Eclipse]",
             "Danbooru Prompt Forge [Eclipse]",
+            "Decode and Append Timeline [Eclipse]",
             "Detailer (SEGS/pipe) [Eclipse]",
             "Detailer Pipe Passer [Eclipse]",
             "Eclipse KSampler (Kargim) [Eclipse]",
@@ -13940,6 +13942,7 @@
             "Float Passer [Eclipse]",
             "Float [Eclipse]",
             "Folder Path [Eclipse]",
+            "Frame Timeline Loop Gate [Eclipse]",
             "Generation Data (Gated) [Eclipse]",
             "Generation Data [Eclipse]",
             "Get First Image [Eclipse]",
@@ -14020,6 +14023,7 @@
             "Prompt Styler v2 [Eclipse]",
             "RIFE Multiplier [Eclipse]",
             "Read Prompt Files [Eclipse]",
+            "Render Lyric Captions [Eclipse]",
             "Replace String [Eclipse]",
             "Replace String v3 [Eclipse]",
             "Resolution Scale [Eclipse]",
@@ -14054,6 +14058,8 @@
             "Tile Split [Eclipse]",
             "To Batch [Eclipse]",
             "To List [Eclipse]",
+            "Transcribe Audio [Eclipse]",
+            "Trim Frame Timeline [Eclipse]",
             "Trim to Shortest [Eclipse]",
             "Universal Block Swap [Eclipse]",
             "VAE Passer [Eclipse]",
