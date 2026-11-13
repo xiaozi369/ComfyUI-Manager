@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Notice retrieval verifies the TLS certificate
+
+The notice in the Manager menu is fetched from GitHub with certificate
+verification on; it was off for every user. A response whose certificate is not
+trusted is discarded and the notice area shows `Unable to retrieve Notice`. It
+shows the same when the connection fails, where it used to show a server error.
+Behind a proxy that re-signs TLS traffic, point the `SSL_CERT_FILE` environment
+variable at a CA bundle that includes the proxy's CA, or set `bypass_ssl = True`
+in `config.ini`, which turns verification off for this fetch too (#3302).
+
 ### Security policy: dedicated install flags (`allow_git_url_install` / `allow_pip_install`)
 
 Two new boolean keys in `config.ini` (`[default]` section), both defaulting to
@@ -55,3 +65,17 @@ deliberate trade-off: it requires explicit operator opt-in, remains bounded
 to loopback listeners, and the flag-deny path on outdated ComfyUI still
 surfaces the `comfyui_outdated` notice. If you operate an outdated ComfyUI
 deployment, leave both flags at their default `false` and update ComfyUI.
+
+### Removed share destinations
+
+Four share destinations no longer take workflows from Manager and are removed:
+ComfyWorkflows (its domain registration has expired), Copus (its API answers
+that publishing from ComfyUI is no longer supported), OpenArt (its workflow API
+and pages are gone), and eSheep (its site no longer resolves). Sharing to YouML
+and to the Matrix server is unchanged. A saved `Share` setting that names a
+removed site now acts as `All`, and the Workflow Gallery button no longer opens
+a removed site that was visited last. The files saved for the removed sites are
+no longer read; `comfyworkflows_sharekey`, `.openart_key`, and
+`esheep_share_message.json` in Manager's data directory
+(`<USER_DIRECTORY>/__manager/`, or `<USER_DIRECTORY>/default/ComfyUI-Manager/`
+on older ComfyUI) can be deleted.
