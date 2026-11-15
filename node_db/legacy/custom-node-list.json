@@ -1,6 +1,87 @@
 {
     "custom_nodes": [
         {
+            "author": "veoreg",
+            "title": "ComfyUI-SmartGridCutter [REMOVED]",
+            "reference": "https://github.com/veoreg/ComfyUI-SmartGridCutter",
+            "files": [
+                "https://github.com/veoreg/ComfyUI-SmartGridCutter"
+            ],
+            "install_type": "git-clone",
+            "description": "Universal grid image splitter for ComfyUI that automatically detects grid layout by analyzing brightness/contrast and splits any grid image into individual frames."
+        },
+        {
+            "author": "veoreg",
+            "title": "ComfyUI-ForcedAlignTimings [REMOVED]",
+            "reference": "https://github.com/veoreg/ComfyUI-ForcedAlignTimings",
+            "files": [
+                "https://github.com/veoreg/ComfyUI-ForcedAlignTimings"
+            ],
+            "install_type": "git-clone",
+            "description": "Word-level forced alignment for the Synthy/iRead custom TTS provider that aligns generated speech against known input text and returns per-word timings."
+        },
+        {
+            "author": "smthemex",
+            "title": "ComfyUI_OmniParser [REMOVED]",
+            "reference": "https://github.com/smthemex/ComfyUI_OmniParser",
+            "files": [
+                "https://github.com/smthemex/ComfyUI_OmniParser"
+            ],
+            "install_type": "git-clone",
+            "description": "Try [a/OmniParser](https://github.com/microsoft/OmniParser) in ComfyUI which a simple screen parsing tool towards pure vision based GUI agent."
+        },
+        {
+            "author": "smthemex",
+            "title": "ComfyUI_Diffree [REMOVED]",
+            "id": "comfyui_diffree",
+            "reference": "https://github.com/smthemex/ComfyUI_Diffree",
+            "files": [
+                "https://github.com/smthemex/ComfyUI_Diffree"
+            ],
+            "install_type": "git-clone",
+            "description": "using diffree: Text-Guided Shape Free Object Inpainting with Diffusion Model"
+        },
+        {
+            "author": "kallama",
+            "title": "comfyui_epub_tts [REMOVED]",
+            "reference": "https://github.com/kallama/comfyui_epub_tts",
+            "files": [
+                "https://github.com/kallama/comfyui_epub_tts"
+            ],
+            "install_type": "git-clone",
+            "description": "Convert EPUB's into audiobooks using TTS nodes"
+        },
+        {
+            "author": "evrardt",
+            "title": "ComfyUI-Spectrum [REMOVED]",
+            "reference": "https://github.com/evrardt/ComfyUI-Spectrum",
+            "files": [
+                "https://github.com/evrardt/ComfyUI-Spectrum"
+            ],
+            "install_type": "git-clone",
+            "description": "Spectrum-style acceleration path for FLUX in ComfyUI."
+        },
+        {
+            "author": "catnipglitch",
+            "title": "comfyui-google-genmedia-custom-nodes [REMOVED]",
+            "reference": "https://github.com/catnipglitch/comfyui-genmedia-gemini-api",
+            "files": [
+                "https://github.com/catnipglitch/comfyui-genmedia-gemini-api"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI custom nodes for Google GenMedia models (Veo, Imagen, Nano Banana, Gemini, Virtual-try-on, Lyria) with Gemini API key and Vertex AI dual auth support"
+        },
+        {
+            "author": "Candlehead",
+            "title": "Candlehead-Comfy-Nodez [REMOVED]",
+            "reference": "https://github.com/Candlehead/Candlehead-Comfy-Nodez",
+            "files": [
+                "https://github.com/Candlehead/Candlehead-Comfy-Nodez"
+            ],
+            "install_type": "git-clone",
+            "description": "Comprehensive suite of utility nodes for ComfyUI including AspectToRes, ImageInfo, and TextProcessor for image processing workflows."
+        },
+        {
             "author": "vovler",
             "title": "comfyui_tensorrt2 [REMOVED]",
             "reference": "https://github.com/vovler/ComfyUI_TensorRT2",

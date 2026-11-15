@@ -2,6 +2,109 @@
 
 ## Unreleased
 
+### The node preview shows a node's definition as text
+
+Hovering over a node name in a pack's node list of the Custom Nodes Manager
+shows a preview of the node: its name, inputs, default values, outputs and
+description. They were inserted as HTML, so text between angle brackets, such
+as a default of `<lora:detail:0.8>`, was missing from the preview, and markup
+in a node definition was rendered. They are now shown as they are written
+(#3434).
+
+### A registry archive that cannot be extracted leaves nothing behind
+
+When the archive of a registry node pack could not be extracted, for instance
+because an entry in it cannot be written, the install ended with an error and
+left the directory it had created for the pack, with the files extracted so
+far, and the downloaded archive in `custom_nodes`. Installing the pack again
+then stopped with `Install path already exists` until the directory was removed
+by hand. The install now reports `Failed to extract archive`, and removes the
+directory and the archive (#3433).
+
+### Cache files are replaced whole, and their age is counted from the last write
+
+The cached channel lists and the registry's node list were written in place. A
+write that stopped part-way, as when the disk is full or the process is killed,
+left a truncated file, which the Manager reads as an empty list. A cache is now
+written beside the file and put in its place in one step, so the file holds the
+previous list or the new one, and it keeps its permission bits. Where the file
+cannot be replaced, as on Windows while another process has it open, the
+replace is tried again for a moment; a file that stays open is left as it is,
+with a warning in the log, and is updated by a later fetch.
+
+The age of a cached list is counted from its last write. It was read from the
+file's creation time, which Windows keeps when a file is rewritten, so a cache
+first created more than a day ago counted as expired however recently it was
+written (#3432).
+
+### A disabled node pack that another extension asks for is enabled before the restart
+
+When an extension asks through `cm.try-install-custom-node` for a node pack that
+is disabled, the Manager asks whether to enable it and restart. On confirmation
+it restarted ComfyUI without enabling the pack, which came back still disabled.
+The pack is now enabled as the Enable button of the Custom Nodes Manager does,
+and ComfyUI restarts only when the queue reports success; otherwise the reason
+is shown.
+
+### The clauses of a pip requirement are weighed together
+
+A requirement for a `downgrade_blacklist` package is judged by all of its
+clauses. One that allows the installed version is installed when another clause
+sets a minimum above it, as in `transformers==4.*,>=4.58.0` beside an installed
+`4.57.0`, or excludes it with `!=` while a newer version is allowed, as in
+`transformers~=4.57.0,!=4.57.0`; without extras both were skipped, so the
+upgrade did not happen. One that the installed version does not meet and that
+allows no newer version, as in `transformers[torch]<=4.57.0,!=4.57.0` or
+`transformers<4.58,!=4.57.*`, is skipped; it was installed, and pip replaced the
+package with an older version. A pre-release counts as a newer version only when
+`==`, `>=`, `<=`, `~=` or `===` names one: pip before 25.0 takes no other.
+
+At startup, `>` is read as pip reads it: a post-release of the version, such as
+`1.0.post1` for `>1.0`, does not meet it, and the requirement is installed. A
+wildcard such as `==0.21.*` is met by an installed pre-release `0.21.0rc1`, and
+the requirement is no longer passed to pip. A requirement that excludes the
+installed version with `!=` and allows a newer one, as in `numpy>=2.2.0,!=2.2.0`
+beside an installed `2.2.0`, is installed, as an immediate install does; it was
+taken as installed already. pip chooses the version, and that is an older one
+when no newer release exists.
+
+An installed local build, such as the CUDA build `2.5.1+cu124`, is not replaced
+on any of these grounds. For a `downgrade_blacklist` package it is also kept
+when a requirement excludes it with `!=`, as in `xformers!=0.0.30` beside
+`0.0.30+cu126`, unless the requirement sets a minimum above it; pip replaced the
+build with whatever it found. For such a build, these changes only add
+requirements that are skipped.
+
+### pip blacklists apply however a requirement is written
+
+`downgrade_blacklist` protects packages whose names contain a hyphen, such as
+`opencv-python`; they were never protected. Names in `downgrade_blacklist`,
+`pip_blacklist.list` and requirements are compared without regard to case or to
+`-`, `_` and `.` (#3458).
+
+Every version clause of a requirement is read, so `numpy>=1.24,<2` no longer
+passes because its lower bound comes first. Requirements written with spaces,
+parentheses, an environment marker, or as a direct reference (`name @ url`) are
+read as well. A requirement with extras for a `downgrade_blacklist` package is
+installed unless it would downgrade the package, so the extras' dependencies
+are still installed. A `downgrade_blacklist` package is skipped when the
+requirement cannot be compared with the installed version, such as a malformed
+version or a direct reference, and the log says why and how to install it; the
+check raised an error or let the install proceed.
+
+Both lists also apply to requirements that carry pip options such as
+`--index-url`, and to installs run through uv in embedded Python or as a
+standalone tool. These installs were not checked.
+
+At startup, an installed package is recognized however its requirement spells
+the name: pending installs no longer reinstall packages whose names contain `-`
+or `.`. A requirement is installed when the installed version is older than its
+`~=` version or is the version that `>` excludes; an installed version that is
+the `~=` version itself is no longer reinstalled.
+
+`cm-cli` reads `downgrade_blacklist` from `config.ini`. It looked for the file
+under a name that does not exist, so it protected only the built-in packages.
+
 ### Lists load after a channel response that is not JSON
 
 When the channel answered with something other than JSON, such as a block page
