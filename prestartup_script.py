@@ -300,7 +300,36 @@ try:
                 raise ValueError("The object does not have a fileno method")
 
         def isatty(self):
-            return False
+            # Delegate to the real console we wrap, not a hardcoded False.
+            # Returning False here made colorama (and any ANSI-aware lib) believe
+            # the stream is a pipe and strip every ANSI code from the print() path
+            # in both the console and the file log. The console still receives the
+            # text unchanged -- this only tells colorama the truth about the target.
+            stream = original_stdout if self.is_stdout else original_stderr
+            try:
+                return stream.isatty()
+            except (AttributeError, ValueError, OSError):
+                return False
+
+        @property
+        def closed(self):
+            # Same reasoning as isatty(): without this attribute, colorama's
+            # StreamWrapper.closed falls back to True (AttributeError -> closed),
+            # which again forces strip=True. Report the real underlying state.
+            if log_file.closed:
+                # after close_log() nothing can be written through this logger;
+                # colorama, which keeps it, would write its reset at exit
+                return True
+
+            stream = original_stdout if self.is_stdout else original_stderr
+            try:
+                return stream.closed
+            except AttributeError:
+                # the output still goes to a stream that cannot say whether it is closed
+                return False
+            except ValueError:
+                # a detached stream
+                return True
 
         def write(self, message):
             global is_start_mode
@@ -341,16 +370,18 @@ try:
 
         def sync_write(self, message, file_only=False):
             with log_lock:
-                timestamp = current_timestamp()
-                if self.last_char != '\n':
-                    log_file.write(message)
-                else:
-                    log_file.write(f"[{timestamp}] {message}")
+                # after close_log() the output goes to the console only
+                if not log_file.closed:
+                    timestamp = current_timestamp()
+                    if self.last_char != '\n':
+                        log_file.write(message)
+                    else:
+                        log_file.write(f"[{timestamp}] {message}")
 
-                try:
-                    log_file.flush()
-                except Exception:
-                    pass
+                    try:
+                        log_file.flush()
+                    except Exception:
+                        pass
 
                 self.last_char = message if message == '' else message[-1]
 
@@ -388,12 +419,15 @@ try:
         def close_log(self):
             sys.stderr = original_stderr
             sys.stdout = original_stdout
-            log_file.close()
+            with log_lock:
+                log_file.close()
             
     def close_log():
         sys.stderr = original_stderr
         sys.stdout = original_stdout
-        log_file.close()
+        # a write that has found the file open finishes first
+        with log_lock:
+            log_file.close()
 
 
     if enable_file_logging:

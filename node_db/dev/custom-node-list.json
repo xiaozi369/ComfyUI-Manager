@@ -1,6 +1,28 @@
 {
     "custom_nodes": [
         {
+            "author": "ruiqutech",
+            "title": "RuiquNodes for ComfyUI [SECURITY ISSUE]",
+            "id": "RuiquNodes",
+            "reference": "https://github.com/ruiqutech/ComfyUI-RuiquNodes",
+            "files": [
+                "https://github.com/ruiqutech/ComfyUI-RuiquNodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes of EvaluateMultiple1, EvaluateMultiple3...\nSupport the execution of any fragment of Python code, generating multiple outputs from multiple inputs. [w/This nodepack has a remote code execution vulnerability. Its Evaluate nodes run any Python code the workflow supplies, with no restriction, so a workflow you queue, or a request sent to a ComfyUI server reachable from the network, can run any program on the host.]"
+        },
+        {
+            "author": "rohit267",
+            "title": "Champdev Custom Nodes [SECURITY ISSUE]",
+            "id": "champdev",
+            "reference": "https://github.com/rohit267/champdev-comfyui-nodes",
+            "files": [
+                "https://github.com/rohit267/champdev-comfyui-nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Champdev Custom Nodes. Contains Champdev Save Image/Video, a file manager and a terminal. [w/This nodepack has a remote code execution vulnerability, even when ComfyUI listens only on a loopback address. Once it is loaded, the ComfyUI server serves an interactive OS shell and a file manager, whether or not the nodes are used. The pack sends telemetry, including the password that unlocks them, to the author's server.]"
+        },
+        {
             "author": "magicwang1111",
             "title": "ComfyUI-GPT-image (OpenAI/Relay) [NAME CONFLICT]",
             "id": "comfyui-gpt-image-openai-relay",

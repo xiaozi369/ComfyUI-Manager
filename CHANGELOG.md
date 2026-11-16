@@ -2,6 +2,41 @@
 
 ## Unreleased
 
+### Restarting under comfy-cli no longer reports a closed log file
+
+Restarting ComfyUI from the Manager under comfy-cli printed `ValueError: I/O
+operation on closed file` on the console. The log file is closed before the
+process exits, and what was logged after that was still written to it.
+
+### Libraries are told whether the console is a terminal
+
+With file logging on, the logger that captures the output answered every
+library that asked that the console was not a terminal. After
+`colorama.init()`, the colors of every `print()` were removed, and tqdm and
+rich took a terminal for a pipe. The logger now answers with the state of the
+real console (#3259, #3423).
+
+### The Model Manager no longer reports an install that did not happen
+
+After the server refused a model install request, the Model Manager kept
+waiting, and the end of the next queue, such as a node pack install, was taken
+for the end of that install: it asked to click Refresh and raised the notice
+that all model downloads were completed, although no model had been installed.
+The end of a queue that carries no model result now returns the dialog to idle
+without a message when no task is left, and leaves a pending install and its
+Stop button alone while tasks are left (#3437).
+
+### A snapshot that cannot be restored or removed says why
+
+When the server refused to restore or remove a snapshot, the Snapshot Manager
+showed `Restore snapshot failed: undefined / ReferenceError: exception is not
+defined`, also for a removal, and after a refused restore it still asked for a
+restart of ComfyUI. An answer with another error status, such as a 502 from a
+proxy, was taken as success. The message now names the snapshot and the reason:
+the server's text when it gives one, and otherwise the status line, such as
+`HTTP 400 Bad Request`. A restart is asked for only after a restore that was
+accepted (#3436).
+
 ### The node preview shows a node's definition as text
 
 Hovering over a node name in a pack's node list of the Custom Nodes Manager
