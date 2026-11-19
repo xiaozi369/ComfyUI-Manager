@@ -10,8 +10,10 @@ import aiohttp
 import json
 import threading
 import os
+import shutil
 from datetime import datetime
 import subprocess
+import tempfile
 import sys
 import re
 import logging
@@ -456,6 +458,70 @@ def extract_package_as_zip(file_path, extract_path):
     except zipfile.BadZipFile:
         logging.error(f"File '{file_path}' is not a zip or is corrupted.")
         return None
+
+
+def is_inside(directory, name):
+    directory = os.path.abspath(directory)
+    try:
+        return os.path.commonpath((directory, os.path.abspath(os.path.join(directory, name)))) == directory
+    except ValueError:
+        # on Windows, a path of another drive
+        return False
+
+
+def switch_package_files(file_path, path):
+    import zipfile
+    try:
+        with zipfile.ZipFile(file_path, "r") as zip_ref:
+            extracted = zip_ref.namelist()
+    except zipfile.BadZipFile:
+        logging.error(f"File '{file_path}' is not a zip or is corrupted.")
+        return None
+
+    with open(os.path.join(path, '.tracking'), 'r', encoding='utf-8') as f:
+        # as the list is written: a name can start or end with a space
+        prev_files = {line.rstrip('\n') for line in f}
+    root = os.path.abspath(path)
+    garbage = prev_files - set(extracted)
+    garbage = [os.path.abspath(os.path.join(root, x)) for x in garbage if is_inside(root, x)]
+
+    for x in garbage:
+        try:
+            if os.path.isfile(x):
+                os.remove(x)
+        except OSError as e:
+            logging.warning(f"[ComfyUI-Manager] A file of the old version is left: {e}")
+
+    folders = set()
+    for x in garbage:
+        while len(x) > len(root):
+            folders.add(x)
+            x = os.path.dirname(x)
+
+    real_root = os.path.realpath(root)
+
+    def reached_without_a_link(x):
+        return os.path.normcase(os.path.realpath(x)) == os.path.normcase(real_root + x[len(root):])
+
+    for x in sorted(folders, key=len, reverse=True):
+        try:
+            if not os.path.isdir(x) or not reached_without_a_link(x):
+                continue
+
+            # the files of a `__pycache__` are caches of the modules that were there, as those of Python and of numba
+            cache = os.path.join(x, '__pycache__')
+            if os.listdir(x) == ['__pycache__'] and reached_without_a_link(cache):
+                for name in os.listdir(cache):
+                    os.remove(os.path.join(cache, name))
+                os.rmdir(cache)
+
+            if not os.listdir(x):
+                os.rmdir(x)
+        except OSError as e:
+            logging.warning(f"[ComfyUI-Manager] A folder of the old version is left: {e}")
+
+    # after the files are removed: two names can be one file, as names that differ in case alone are on Windows
+    return extract_package_as_zip(file_path, path)
 
 
 # The functions below import packaging where they use it: prestartup_script imports this module
@@ -1109,3 +1175,42 @@ def restore_pip_snapshot(pips, options):
                 failed.append(x)
 
     print(f"Installation failed for pip packages: {failed}")
+    return failed
+
+
+def which_on_path(name):
+    """
+    the file that the directories of PATH give for the name of a command
+    `shutil.which` looks in the current directory first on Windows, and takes a directory of PATH that is not absolute
+    """
+    names = [name]
+    if os.name == 'nt':
+        extensions = [x for x in os.environ.get('PATHEXT', '.COM;.EXE;.BAT;.CMD').split(os.pathsep) if x]
+        if not name.lower().endswith(tuple(x.lower() for x in extensions)):
+            names = [name + x for x in extensions]
+
+    for directory in os.get_exec_path():
+        for x in names:
+            path = os.path.join(directory, x)
+            if os.path.isabs(directory) and os.path.isfile(path) and os.access(path, os.X_OK):
+                return path
+
+    return None
+
+
+def find_git_executable(git_exe, timeout=10):
+    # a name without a directory is a command of PATH; GitPython would take it as a file of the current directory
+    path = shutil.which(git_exe) if os.path.dirname(git_exe) else which_on_path(git_exe)
+    if path is None:
+        return None
+
+    try:
+        # the answer goes to a file: with a pipe, Windows waits after the time is up for every program that holds the pipe
+        with tempfile.TemporaryFile() as answer:
+            res = subprocess.run([path, 'version'], stdout=answer, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, timeout=timeout)
+            answer.seek(0)
+            is_git = res.returncode == 0 and answer.read(11) == b'git version'
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+    return os.path.abspath(path) if is_git else None

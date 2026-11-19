@@ -123,8 +123,18 @@ def check_file_logging():
     if 'file_logging' in default_conf and default_conf['file_logging'].lower() == 'false':
         enable_file_logging = False
 
+def set_git_executable():
+    # GitPython reads this when it is imported, so that a git that is not on PATH can be named
+    # read as written: a path of Windows may hold a `%`, which the parser takes as the start of a reference
+    git_exe = default_conf.get('git_exe', '', raw=True) if 'git_exe' in default_conf else ''
+    if git_exe != '' and _has_system_user_api:
+        git_exe = manager_util.find_git_executable(git_exe)
+        if git_exe is not None:
+            os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = git_exe
+
 
 read_config()
+set_git_executable()
 read_uv_mode()
 security_check.security_check()
 check_file_logging()
@@ -635,6 +645,8 @@ if os.path.exists(restore_snapshot_path):
 
         print("[ComfyUI-Manager] Restore snapshot.")
         new_env = os.environ.copy()
+        if 'COMFYUI_PATH' not in new_env:
+            new_env["COMFYUI_PATH"] = os.path.dirname(folder_paths.__file__)
         if 'COMFYUI_FOLDERS_BASE_PATH' not in new_env:
             new_env["COMFYUI_FOLDERS_BASE_PATH"] = comfy_path
 
@@ -644,7 +656,8 @@ if os.path.exists(restore_snapshot_path):
         new_env['_COMFYUI_MANAGER_CNR_ALLOW_FLAGGED'] = str(
             allow_flagged or manager_util.is_loopback_listener(args.listen)
         ).lower()
-        cmd_str = [sys.executable, cm_cli_path, 'restore-snapshot', restore_snapshot_path]
+        cmd_str = [sys.executable, cm_cli_path, 'restore-snapshot', restore_snapshot_path,
+                   '--user-directory', folder_paths.get_user_directory(), '--restore-to', custom_nodes_base_path]
         exit_code = process_wrap(cmd_str, custom_nodes_base_path, handler=msg_capture, env=new_env)
 
         if exit_code != 0:
@@ -710,9 +723,10 @@ def execute_lazy_cnr_switch(target, zip_url, from_path, to_path, no_deps, custom
     download_path = os.path.join(custom_nodes_path, archive_name)
     manager_downloader.download_url(zip_url, custom_nodes_path, archive_name)
 
-    # 2. extract files into <node_id>@<cur_ver>
-    extracted = manager_util.extract_package_as_zip(download_path, from_path)
-    os.remove(download_path)
+    try:
+        extracted = manager_util.switch_package_files(download_path, from_path)
+    finally:
+        os.remove(download_path)
 
     if extracted is None:
         if len(os.listdir(from_path)) == 0:
@@ -721,32 +735,10 @@ def execute_lazy_cnr_switch(target, zip_url, from_path, to_path, no_deps, custom
         print(f'Empty archive file: {target}')
         return False
 
+    if from_path != to_path:
+        print(f"'{from_path}' is moved to '{to_path}'")
+        shutil.move(from_path, to_path)
 
-    # 3. calculate garbage files (.tracking - extracted)
-    tracking_info_file = os.path.join(from_path, '.tracking')
-    prev_files = set()
-    with open(tracking_info_file, 'r') as f:
-        for line in f:
-            prev_files.add(line.strip())
-    garbage = prev_files.difference(extracted)
-    garbage = [os.path.join(custom_nodes_path, x) for x in garbage]
-
-    # 4-1. remove garbage files
-    for x in garbage:
-        if os.path.isfile(x):
-            os.remove(x)
-
-    # 4-2. remove garbage dir if empty
-    for x in garbage:
-        if os.path.isdir(x):
-            if not os.listdir(x):
-                os.rmdir(x)
-
-    # 5. rename dir name <node_id>@<prev_ver> ==> <node_id>@<cur_ver>
-    print(f"'{from_path}' is moved to '{to_path}'")
-    shutil.move(from_path, to_path)
-
-    # 6. create .tracking file
     tracking_info_file = os.path.join(to_path, '.tracking')
     with open(tracking_info_file, "w", encoding='utf-8') as file:
         file.write('\n'.join(list(extracted)))
@@ -809,8 +801,9 @@ def execute_startup_script():
 
                     elif script[1] == "#LAZY-CNR-SWITCH-SCRIPT":
                         status = script[8] if len(script) > 8 else ''
-                        if execute_lazy_cnr_switch(script[0], script[2], script[3], script[4], script[5], script[6], status):
-                            execute_lazy_install_script(script[3], script[7])
+                        to_path = script[4]
+                        if execute_lazy_cnr_switch(script[0], script[2], script[3], to_path, script[5], script[6], status):
+                            execute_lazy_install_script(to_path, script[7])
 
                     elif script[1] == "#LAZY-DELETE-NODEPACK":
                         execute_lazy_delete(script[2])

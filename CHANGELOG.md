@@ -16,11 +16,158 @@ whatever value a request carried and wrote it to `config.ini`. They answer 400
 for a value that is not one of those the Manager's menu offers, and for a JSON
 body without a `value`, which ended with status 500.
 
+### `git_exe` chooses the git executable
+
+The path set as `git_exe` in `config.ini` was read but not used: git commands
+kept running the `git` found on `PATH`. The Manager, cm-cli and the git helper
+now run the configured executable. For the Manager it no longer has to be on
+`PATH`: the Manager also starts when the only git is the one named by
+`git_exe`. cm-cli still needs a git on `PATH` to start.
+
+A value that is not a working git is reported in the log, and the default git
+is used. The value is read as it is written: with a `%` in it, as in a path
+of Windows, the Manager read every setting of `config.ini` as its default.
+`git_exe` is used only when the configuration file is in a protected
+directory, that is with a ComfyUI that has the System User API.
+
+### The commit and the submodules of a git node pack
+
+A snapshot recorded no commit for a git node pack whose refs were packed, as
+after `git gc`. The commit is read from `packed-refs` too. A `HEAD` that is
+not UTF-8, as one that names a branch in another encoding, raised an error
+where the commit of a node pack is read. It is read as bytes now. On Windows
+the commit of a branch whose name is not ASCII, as a Korean one, could be
+unknown as well: the file of the branch is looked for under the name that Git
+for Windows gives it. The commit is read while the Manager is loading, and an
+error there kept the Manager from loading: also for a `.git` with a folder
+where the file of the branch would be, as after
+`git checkout --orphan feature` beside a branch `feature/x`, or with a file
+that cannot be read. The commit of such a node pack is unknown now.
+
+When a snapshot restore checks a git node pack out, its submodules are brought
+to the commits that the commit names, also when the node pack is at the commit
+of the snapshot already. A submodule that was never fetched is then fetched
+too in a node pack that the Manager installed, as the Manager clones a node
+pack with its submodules; in a node pack cloned without them, it is fetched
+only when the node pack itself is checked out.
+
+### A node pack whose `.git/config` cannot be read
+
+The Manager reads the remote url of every installed node pack from its
+`.git/config` while it is loading. A url with a `%`, such as one with `%20`,
+a key without a value, such as `bare` alone, a key on a line that is indented
+more than the one before it, a byte order mark at the start of the file, or
+text that the encoding of the system cannot decode, such as the name of a
+branch in another encoding, raised an error there, and the Manager did not
+load. These files are read now, and for a file that cannot be read the url of
+that node pack is unknown and a warning names the file once.
+
+### An update whose git step fails is a failure, and can be done again
+
+On Windows the pull of an update runs in a helper process, which ended with 0
+when the pull failed, and its result was not read: the update went on to the
+install script and ended as done. The helper ends with 1 now, and the update
+fails.
+
+When the update of its submodules failed, a node pack stayed at the new
+commit: the next update found nothing to do, and the install script of the
+update never ran. The pull is undone, and the submodules that were updated
+before the one that failed go back with it. A node pack with a submodule
+that cannot be fetched at all is not updated until it can.
+
+### A snapshot restore reports what failed, and restores the pinned commit
+
+The summary of a restore listed a node pack as `INSTALLED`, `DISABLED` or
+`ENABLED` without looking at the result of the step: a clone that failed, for
+example because the directory already existed or the url could not be reached,
+was `INSTALLED`. A step that fails is now listed as `FAILED`, and the Manager
+itself is no longer listed as `DISABLED`. A registry that cannot be reached
+ended the restore at the first node pack to install from it, and so did a
+node pack whose directory could not be moved to disable or enable it; such a
+node pack is listed as `FAILED`, and the restore goes on. `cm-cli
+restore-snapshot` ends with 1 when a step failed or a pip package that a
+`--pip-*` option selects was not installed, and a scheduled restore then says
+`Restore snapshot failed.`: it ended with 0. A url of the snapshot that cannot
+be parsed ended the restore as well; the node pack is listed as `FAILED`.
+
+A git node pack that the restore had to clone stayed at the newest commit. It
+is checked out at the commit of the snapshot, and its install script runs after
+that. When the commit cannot be checked out, the install script still runs, at
+the commit the clone is at, and the node pack is listed as `FAILED`. An
+installed git node pack that the registry does not know was checked out only
+when cm-cli was run from `custom_nodes`, as a scheduled restore does; it is
+checked out from any directory.
+
+A git node pack of the registry that was already installed, or that the
+restore enabled, was listed a second time as `SKIPPED`; it is listed once. An
+installed one that is checked out is listed by its name, as the others are: it
+was listed by its path.
+
+A registry node pack that the restore had to install was unpacked, but its
+requirements were not installed and its install script did not run. The
+restore now runs them, and lists the node pack as `FAILED` when they fail.
+
+A requirement or an install script that failed was taken as done until the
+next start: the next node pack that names the requirement skipped it, and
+installing or fixing the node pack again did not run the script. Both are
+tried again. The install script of a git node pack was skipped in the same way
+when it was cloned where another version of the node pack had been installed
+since the start, as a restore does for a snapshot that has both; it runs.
+
 ### Install requests with an unusable body are answered with 400
 
 `/customnode/install/git_url` and `/customnode/install/pip` answered 500 when
 the JSON body was not an object, or when `url` or `packages` was not a string.
 They answer 400, as they do for a missing field.
+
+### What is reserved for the next start is written as UTF-8
+
+The install script of an update, the removal of a node pack whose files are in
+use and a switch of version are reserved in a file that the start-up script
+reads as UTF-8, and that was written in the encoding of the system. On Windows
+a path with a character outside ASCII was lost: one that the code page cannot
+write, such as a Korean folder name with code page 1252, raised an error and
+nothing was reserved; one that it can write was read back as another path, and
+what was reserved was not carried out at the next start. The file is written
+as UTF-8.
+
+A switch of version that is carried out at the next start looked for the files
+that the new version no longer has in `custom_nodes` in place of the directory
+of the node pack: they stayed in the node pack, and a file of the same name in
+`custom_nodes` was removed. They are removed from the node pack. A switch of
+version, at the next start or at once, removes the files that the new version
+no longer has before it extracts the archive of the new version: where two
+names are one file, as `./a.py` and `a.py`, or names that differ in case alone
+on Windows, a file of the new version was removed after it was extracted.
+A name of the old list that leads out of the node pack, with `..` or as an
+absolute path, removed a file outside it; nothing is removed for such a name.
+A file that the old version has alone and that cannot be removed, as one that
+another program has open on Windows, is left with a warning, and the switch
+goes on with the files of the new version.
+A folder that the files of the old version left empty, or with nothing but the
+`__pycache__` of Python, stayed, and a file of the new version could not take
+its place; such a folder is removed.
+A node pack whose directory keeps its name is no longer moved onto itself at
+the next start, which Windows refuses while a file in it is open.
+When the switch moves the node pack to another directory, the install script
+of the new version runs there; it was looked for in the directory that the
+node pack was moved from, and did not run.
+
+That list is written as UTF-8 and was read in the encoding of the system. On
+Windows a switch of version of a node pack with a file name that the code page
+of the system cannot decode ended in the middle: the files of the new version
+were unpacked, its install script did not run and the files of the old version
+stayed. The list is read as UTF-8. A name of the list is read as it is written:
+a space at its start or its end was dropped, and the file of the other name was
+the one removed.
+
+### A scheduled snapshot restore works with `--base-directory`
+
+With `--base-directory`, where `custom_nodes` is not inside the ComfyUI
+directory, a snapshot restore scheduled for the next start failed with
+`ModuleNotFoundError: No module named 'utils'`, and the request was dropped.
+The restore now gets the path of ComfyUI, and the user directory and
+`custom_nodes` directory the server uses.
 
 ### Console messages show paths, URLs and package names as they are
 
