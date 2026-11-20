@@ -2,6 +2,141 @@
 
 ## Unreleased
 
+### A snapshot restore installs a git node pack as the snapshot names it
+
+A snapshot names a git node pack by its url. For a url that the registry
+knows, the restore asked for a nightly install by the id of the registry, and
+that install takes its url from the node list. When the node list had no entry
+for the node pack, as after the list went over to a fork of it, nothing was
+cloned and the summary said `[  FAILED   ]` with no word of why. When the node
+list had another repository under the same name, that one was cloned. The
+restore clones the url of the snapshot, as a nightly install of that node
+pack: a version of the registry that is enabled is disabled first, and the
+node pack is checked out at the commit of the snapshot. The restore no longer
+reads the node list.
+
+A node pack that was switched from its clone to a version of the registry
+keeps the clone, disabled, and a snapshot saves both. The restore enabled or
+cloned the clone and disabled the version that the snapshot names. Such a node
+pack is restored at that version, and its git entry is left alone. When that
+version cannot be installed, the clone is restored as before.
+
+A clone of the restore that is refused says why in the log, as
+`Invalid git url: ...`.
+
+### A failed legacy backup is reported without the text of the error, and leaves no part of a backup
+
+When the legacy directory could not be moved to its backup, the startup notice
+carried the text of the error, which has paths of that directory in it. The
+notice now says only that the backup failed, and the error is in the terminal.
+When the move fails while it copies, the legacy directory is as it was and the
+next start tries again; what was copied is removed, so that the starts do not
+each leave another part of a backup.
+
+### On an old ComfyUI, Manager only updates ComfyUI
+
+On a ComfyUI without the System User API (before 0.3.76), Manager's data
+directory is not protected, so installs are refused there and startup scripts
+are not run. Other requests were still served, and other files of that
+directory were still acted on. Now only the update of ComfyUI is served there:
+every other request to Manager is answered with `comfyui_outdated`. A snapshot
+restore scheduled in that directory is left alone at the start, and the start
+says so; its `pip_auto_fix.list` and `pip_overrides.json` are not applied by
+the start or by the update. Update ComfyUI to use Manager again.
+
+After that update, the first start moves `config.ini` to the protected
+directory. It moved every setting and raised only a security level below
+`normal`. Now it moves the settings that are preferences and leaves behind
+those that permit an install (`allow_git_url_install`, `allow_pip_install`,
+`allow_flagged_nodepack_install`) or change where Manager fetches from
+(`channel_url`, `http_channel_enabled`, `bypass_ssl`, `git_exe`), and any it
+does not know. Those are back at their defaults, and the terminal lists the
+ones that had another value; set them again if you need them. A security level
+that is not a security level is set to `normal` like one below it.
+### Every POST that changes something is taken only as `application/json`, and the share option is saved by POST
+
+A page of another site can make the browser send a GET, and a POST without a
+body and without a Content-Type, for which no preflight is made. The Manager
+routes that take no body (`queue/start`, `queue/reset`, `queue/update_comfyui`,
+`snapshot/save`, `reboot`) now answer 400 unless the request has
+`Content-Type: application/json`, as the routes that read a JSON body do: a
+browser does not send that header to another site without a preflight. The
+share option is saved with `POST /manager/share_option` and a JSON body
+`{"value": ...}`; `GET /manager/share_option` only answers with the saved
+option, and a `value` given to it is ignored. The Manager's own pages send the
+header. A script that calls one of these routes has to send it too, and one
+that saved the share option with `?value=` has to POST.
+
+### The file of the saved Matrix account is readable by its user only
+
+The share dialog saves the Matrix account, with its password, in `matrix_auth`
+in Manager's data directory. The file was written with the default mode of
+new files, which other users of the machine can usually read. It is now written
+with mode `0600`, and a file that is already there gets that mode the next
+time an account is saved.
+
+### The share option that is saved is one of the choices of the share menu
+
+`/manager/share_option` saved any text as the share option. It now saves
+`all`, `none`, `youml` or `matrix`, the choices of the menu, and answers 400
+for another value.
+
+### Restoring a snapshot needs the security level of a switch to an older version
+
+A snapshot restore takes the node packs back to the versions that the
+snapshot recorded, older ones too. `POST /snapshot/restore` needed `middle`, which the
+default `security_level = normal` gives on any listener; a switch of ComfyUI to
+an older version needs `high`. A restore now needs `high` as well: `normal-` or
+lower on a loopback listener, `weak` otherwise. At `normal`, `Restore` in the
+Snapshot Manager is refused; `cm-cli restore-snapshot` is not changed.
+
+### Routes that read a JSON body take it only as `application/json`
+
+A POST route that reads a JSON body parsed it whatever the Content-Type of the
+request. These routes now answer 400 unless the Content-Type is
+`application/json`. The Manager's own scripts send it; a script or tool that
+posts JSON to the Manager without that header has to add it.
+
+### Switching ComfyUI to an older version is held to the security level
+
+Switching the ComfyUI version was not checked against `security_level`. A
+switch to an older release, or to anything that is not a release tag, now needs
+`normal-` or lower when ComfyUI listens on a loopback address, and `weak`
+otherwise; at the default `normal`, `Switch ComfyUI` in the Manager menu
+answers that the security level does not allow it. A switch to `nightly` or to
+a newer release is an update and works at every level, as before. A ComfyUI
+with commits after its release, as on `nightly`, would go back by a switch to
+that release, so that counts as older; in a repository without release tags,
+such as a clone without tags, every version but `nightly` does. The menu
+changes the update policy to that of the chosen version only after the switch
+has happened; it did so before asking for the switch.
+
+### The server no longer returns saved sharing credentials
+
+`GET /manager/get_matrix_auth` answered with the saved Matrix homeserver,
+username and password, to any client that could reach the server. It now answers
+without the password. The share dialog leaves the password field empty for the
+saved account, and the server uses the saved password for the username it was
+saved with; for another account a password has to be typed. An account is saved
+once it has logged in; a share request no longer replaces the saved account
+before that. If others could reach the server while a Matrix password was saved,
+change that password.
+
+Sharing to Matrix logs in to matrix.org, where the share room is, and to no
+other homeserver. The homeserver of the share dialog can no longer be changed, a
+share request that names another homeserver is refused, and an account that was
+saved for another homeserver is not used: an account of matrix.org has to be
+entered. Before, the server logged in to any homeserver that a request named,
+with the password of the request.
+
+The YouML API token is kept in the browser that shares, which is what sends it
+to YouML; the server stored it, and `GET /manager/youml/settings` answered with
+it in the same way. Both `/manager/youml/settings` routes are removed. The token
+has to be entered once more in the YouML share dialog. Delete `.youml` in
+Manager's data directory (`<USER_DIRECTORY>/__manager/`, or
+`<USER_DIRECTORY>/default/ComfyUI-Manager/` on older ComfyUI), and if others
+could reach the server while a token was saved, issue a new token.
+
 ### A setting chosen while the Manager menu is loading it is kept
 
 The Manager menu asks the server for the database mode, the component policy,
@@ -184,6 +319,46 @@ they are; numbers and quoted strings keep their colors.
 When the versions of ComfyUI could not be read, the request for the list ended
 with status 500 and a `TypeError` in the log: the call that logs the cause was
 given an argument it does not take. The cause is logged, and the answer is 400.
+
+### A value of config.ini is plain text, and one that a setting cannot have gives its default
+
+Manager read `%(name)s` in a value of `config.ini` as a reference to another
+setting, and a `%` that is not of that form made the whole file unreadable:
+every setting was then at its default, `security_level` too, and nothing said
+so. A value is now read as it is written; `%%`, which was read as one `%`, is
+now two. `security_level`, `network_mode`, `db_mode`, `update_policy` and
+`component_policy` have their default when `config.ini` gives a value that
+they cannot have, and Manager logs a warning that names it; the other settings
+are read as before, and `config.ini` keeps the value. Before, a
+`security_level` that is not a level refused every action that needs one; now
+it is `normal`. A `config.ini` that cannot be read at all still gives the
+default settings, and is still written anew from them when a setting is
+saved; Manager now logs a warning when it reads one.
+
+### After an update from an old ComfyUI, the requirements of ComfyUI are installed before the node packs are loaded
+
+On Windows, or with `always_lazy_install`, the update of ComfyUI reserves the
+install of its requirements for the next start. On a ComfyUI without the
+System User API that was reserved in the legacy directory, which the updated
+ComfyUI does not read. Manager installed them only at a start that found a
+`config.ini` in both directories, after ComfyUI and the node packs had been
+loaded. It now installs them at the start that still finds the legacy
+`config.ini`, before the node packs are loaded. A ComfyUI that cannot start
+without one of its new requirements does not get as far as Manager, as
+before: install them with `pip install -r requirements.txt` then. The legacy
+directory is moved to `.legacy-manager-backup` as before; a backup that is
+already there is no longer deleted, the new one gets a numbered name, and the
+start reminds of each of them.
+
+### An old ComfyUI no longer leaves `security_level = strong` in config.ini
+
+On a ComfyUI without the System User API, Manager refused installs by changing
+the security level it had read to `strong`. A `config.ini` that Manager
+created there was written with that `strong`, and installs stayed refused
+after ComfyUI was updated. Now Manager does not change the security level:
+the check of the security level refuses on such a ComfyUI, whatever the level
+is. A `config.ini` that already has `security_level = strong` is not changed:
+if you did not choose it, set it to `normal`.
 
 ### Restarting under comfy-cli no longer reports a closed log file
 
@@ -421,18 +596,12 @@ allow_pip_install = true
 
 Changes take effect after a **restart** (no hot reload).
 
-#### Residual-risk note — outdated ComfyUI behavior change
+#### Outdated ComfyUI
 
-On outdated ComfyUI versions (no system-user API), the manager previously
-forced `security_level = strong`, which unconditionally denied the
-git-URL/pip install surfaces. After this change those surfaces are governed
-by the new flags instead: an operator who explicitly sets a flag to `true`
-on a **loopback** listener can now perform installs on outdated ComfyUI
-where the forced-strong policy previously denied them. This is an accepted,
-deliberate trade-off: it requires explicit operator opt-in, remains bounded
-to loopback listeners, and the flag-deny path on outdated ComfyUI still
-surfaces the `comfyui_outdated` notice. If you operate an outdated ComfyUI
-deployment, leave both flags at their default `false` and update ComfyUI.
+On outdated ComfyUI versions (no system-user API) the flags do not apply:
+git-URL and pip installs are refused there like every other install, whatever
+the flags and the listener are, and the answer is the `comfyui_outdated`
+notice. Update ComfyUI to use them.
 
 ### Removed share destinations
 
