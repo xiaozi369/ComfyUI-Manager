@@ -2,6 +2,60 @@
 
 ## Unreleased
 
+### A nodepack folder with neither `.git` nor `.tracking` is an invalid installation, fixed by reinstalling
+
+A folder in `custom_nodes` with neither `.git` nor `.tracking`, left by an
+install that broke midway or by a download unpacked by hand, was taken for a
+git nodepack: Update All logged `ERROR: An error occurred while updating ...`
+for it, and its nodepack showed as not installed (#3330). It is now an invalid
+installation. Update All and `cm-cli update all` leave it alone, the Custom
+Nodes Manager marks its row `INVALID INSTALLATION ↗` and offers Reinstall,
+`/customnode/installed` lists it with `invalid_installation: true`, and the
+startup notice names it.
+By its folder name it is enabled, disabled and uninstalled as before.
+
+A reinstall, of any nodepack, keeps the folders it replaces until the new
+installation is in place, and puts them back when the install fails. It
+deleted them first, so a failed download lost the nodepack. `cm-cli reinstall`
+makes the same reinstall and prints `[REINSTALLED]`.
+
+What is in the way of a reinstall, such as a clone of a fork at the install
+path or under the name of the nodepack, is moved to
+`custom_nodes/.disabled/.archived/` and the log says where it is. It is not
+deleted and no longer loaded, and it goes back when the install fails. The
+reinstall failed there with `Install path already exists`.
+
+The console line of a failed update says why the update failed.
+
+### A reserved install does not install a URL requirement again
+
+A requirement that is a URL, as `git+https://github.com/owner/repo` or the URL
+of a wheel, was installed again by every reserved install of its nodepack, and
+for a repository that is a clone and a build at the start of the server
+(#3575). On Windows, or with `always_lazy_install`, every install, update and
+fix that the server is asked for is reserved. The requirement is now skipped
+when a package installed from that URL is there. It is then left as it is, as a
+name without a version is: new commits of the repository are not followed.
+
+### A fix installs a URL requirement again by force
+
+A fix of a nodepack (**Try fix**, `cm-cli fix`) is the way to have a package
+from a URL installed again. It installs what the package needs now, and then
+the package itself from its URL, by force and without the cache of pip or uv.
+When the repository cannot be reached, what is installed is kept, and uv
+installs the installed commit once more from its cache when it has it. A fix
+also installs the requirements that an install, an update or an earlier fix of
+the same session has installed.
+
+### A fix that failed is reported as failed
+
+A fix of a nodepack from the page (**Try fix**) was reported as a success also
+when a requirement could not be installed or `install.py` failed: only the log
+said `install script failed`. Such a fix is now reported as failed, and the
+page shows `An error occurred while fixing '<nodepack>@<version>'.` A fix that
+is reserved for the next start, as on Windows or with `always_lazy_install`,
+is reported as soon as it is reserved, as before.
+
 ### No deprecation warning of aiohttp with `bypass_ssl`
 
 With `bypass_ssl = true`, the fetch of the notice and the fetch of a list
