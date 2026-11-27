@@ -2,6 +2,43 @@
 
 ## Unreleased
 
+### An installed registry nodepack is listed with the registry's id
+
+`GET /customnode/installed` gave the id of a nodepack installed from the
+registry in lowercase, as `comfyui_sigmoidoffsetscheduler`, and a node added
+to a workflow took that id. The Custom Nodes Manager names the nodepack as
+the registry writes it, `ComfyUI_SigmoidOffsetScheduler`, and Check Missing
+and Install Missing Custom Nodes said `Failed to find the following
+ComfyRegistry list` for the id of such a workflow when the nodepack was not
+installed, and then listed the same nodepack. The id is now given as the
+`pyproject.toml` of the nodepack writes it.
+
+### Check Missing finds the nodepack of a node whose id differs in case
+
+A workflow saved with an earlier install keeps the lowercased id. When that
+nodepack was not installed, Check Missing and Install Missing Custom Nodes
+said `Failed to find the following ComfyRegistry list` for the id, and did
+not list the nodepack at all when the node map did not know the node. The id
+of a missing node is now matched without regard to case when the list has no
+exact match, as Custom Nodes In Workflow already did.
+
+### The Custom Nodes Manager no longer offers the "Alternatives of A1111" filter
+
+The Filter of the Custom Nodes Manager no longer offers "Alternatives of
+A1111", which showed the entries of `alter-list.json` in an extra Alternatives
+column. The choice and its route `GET /customnode/alternatives` are removed,
+and Manager no longer fetches `alter-list.json` at start. The file stays in the
+channels, where older versions of Manager still fetch it.
+
+### Update All Custom Nodes in the desktop app shows its result
+
+In the desktop app the Manager menu has Update All Custom Nodes, which does
+not update ComfyUI. When its updates were done the menu showed nothing. The
+result had no entry for ComfyUI, and the menu stopped with an error on the
+missing entry. The box now lists the nodepacks that were updated, with a
+RESTART button, and those whose update failed. When nothing was updated and
+nothing failed, it says `You are already up to date.`
+
 ### Check Update no longer stops the server, and shows how far it is
 
 Check Update in the Custom Nodes Manager fetched every git nodepack inside the
